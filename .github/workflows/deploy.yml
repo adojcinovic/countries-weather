@@ -1,0 +1,59 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular (production)
+        run: npm run build -- --configuration production
+
+      - name: Determine dist folder
+        id: dist
+        run: |
+          if [ -d "dist/frontend-test-countries-weather/browser" ]; then
+            echo "DIST_DIR=dist/frontend-test-countries-weather/browser" >> $GITHUB_OUTPUT
+          else
+            echo "DIST_DIR=dist/frontend-test-countries-weather" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy via rsync over SSH
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
+          rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" \
+            "${{ steps.dist.outputs.DIST_DIR }}/" \
+            "$SSH_USER@$SSH_HOST:/var/www/aleph/"
+
+      - name: Reload Nginx
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          echo "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh -i ~/.ssh/id_ed25519 "$SSH_USER@$SSH_HOST" "sudo nginx -t && sudo systemctl reload nginx"
