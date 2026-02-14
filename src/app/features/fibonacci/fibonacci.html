@@ -1,1 +1,18 @@
-<p>Fibonacci — coming soon</p>
+<div class="fibonacci-container">
+  <h1>Fibonacci Sequence</h1>
+  <p class="subtitle">First 50 numbers — prime numbers are highlighted</p>
+
+  <button class="generate-btn" (click)="generate()" [disabled]="generated">
+    {{ generated ? 'Generated' : 'Generate Fibonacci' }}
+  </button>
+
+  @if (generated) {
+    <ol class="fibonacci-list">
+      @for (item of numbers; track item.value) {
+        <li [class.prime]="item.isPrime">
+          {{ item.value }}
+        </li>
+      }
+    </ol>
+  }
+</div>
