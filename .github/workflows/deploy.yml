@@ -33,17 +33,22 @@ jobs:
             echo "DIST_DIR=dist/frontend-test-countries-weather" >> $GITHUB_OUTPUT
           fi
 
+      - name: Write SSH key + known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/.ssh/id_ed25519
+          printf '%s' "$SSH_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+
       - name: Deploy via rsync over SSH
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
-
           rsync -az --delete -e "ssh -i ~/.ssh/id_ed25519" \
             "${{ steps.dist.outputs.DIST_DIR }}/" \
             "$SSH_USER@$SSH_HOST:/var/www/aleph/"
@@ -52,8 +57,5 @@ jobs:
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
-          echo "$SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
           ssh -i ~/.ssh/id_ed25519 "$SSH_USER@$SSH_HOST" "sudo nginx -t && sudo systemctl reload nginx"
