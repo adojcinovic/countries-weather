@@ -1,1 +1,38 @@
-<p>Country Detail — coming soon</p>
+@if (state$ | async; as state) {
+  @if (state.loading) {
+    <div class="loading">Loading country data...</div>
+  }
+
+  @if (state.error) {
+    <div class="error">{{ state.error }}</div>
+  }
+
+  @if (state.country; as c) {
+    <div class="country-detail">
+      <img class="flag" [src]="c.flags.svg" [alt]="c.flags.alt ?? c.name.common + ' flag'" />
+
+      <h1>{{ c.name.common }}</h1>
+
+      <dl class="info">
+        <div class="info-row">
+          <dt>Capital</dt>
+          <dd>{{ c.capital[0] }}</dd>
+        </div>
+        <div class="info-row">
+          <dt>Population</dt>
+          <dd>{{ c.population.toLocaleString() }}</dd>
+        </div>
+        <div class="info-row">
+          <dt>Region</dt>
+          <dd>{{ c.region }}</dd>
+        </div>
+        <div class="info-row">
+          <dt>Languages</dt>
+          <dd>{{ getLanguages(c) }}</dd>
+        </div>
+      </dl>
+    </div>
+  }
+} @else {
+  <div class="loading">Loading country data...</div>
+}

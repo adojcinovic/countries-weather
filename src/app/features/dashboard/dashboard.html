@@ -1,1 +1,53 @@
-<p>Dashboard 1</p>
+@if (loading()) {
+  <div class="status">Loading European countries...</div>
+}
+
+@if (error()) {
+  <div class="status error">{{ error() }}</div>
+}
+
+@if (!loading() && !error()) {
+  <div class="dashboard">
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-wrapper">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search countries..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+        />
+        @if (searchTerm()) {
+          <button class="search-clear" (click)="searchTerm.set('')" aria-label="Clear search">&times;</button>
+        }
+      </div>
+
+      <select class="select" [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)">
+        <option value="name">Sort: Name</option>
+        <option value="pop-asc">Sort: Population (low to high)</option>
+        <option value="pop-desc">Sort: Population (high to low)</option>
+        <option value="temp-asc">Sort: Temperature (cold to warm)</option>
+        <option value="temp-desc">Sort: Temperature (warm to cold)</option>
+      </select>
+
+      <select class="select" [ngModel]="languageFilter()" (ngModelChange)="languageFilter.set($event)">
+        <option value="">All languages</option>
+        @for (lang of allLanguages(); track lang) {
+          <option [value]="lang">{{ lang }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Grid -->
+    @if (filteredCountries().length === 0) {
+      <div class="status">No countries match your search.</div>
+    } @else {
+      <div class="grid">
+        @for (country of filteredCountries(); track country.name.common) {
+          <app-country-card [country]="country" />
+        }
+      </div>
+    }
+  </div>
+}

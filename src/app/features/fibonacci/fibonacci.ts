@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { generateFibonacci } from '../../utils/fibonacci';
-import { isPrime } from '../../utils/prime';
+import { generateFibonacci } from './utils/fibonacci';
+import { isPrime } from './utils/prime';
 
 @Component({
   selector: 'app-fibonacci',
