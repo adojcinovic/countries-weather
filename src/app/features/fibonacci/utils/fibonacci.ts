@@ -1,4 +1,5 @@
-export function generateFibonacci(n: number): bigint[] {
+export function 
+generateFibonacci(n: number): bigint[] {
   if (n <= 0) return [];
   if (n === 1) return [0n];
 

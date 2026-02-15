@@ -1,0 +1,54 @@
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.125rem;
+}
+
+.error {
+  color: #dc2626;
+}
+
+.country-detail {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  text-align: center;
+
+  .flag {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 1.5rem 0 1rem;
+  }
+}
+
+.info {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-radius: 0.5rem;
+
+  dt {
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  dd {
+    font-weight: 500;
+  }
+}
