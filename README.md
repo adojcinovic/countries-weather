@@ -1,3 +1,29 @@
+# Countries & Weather
+
+Angular app built with standalone components.
+
+## How to run
+
+npm install
+ng serve
+
+Locally open it on http://localhost:4200/
+Live version available on https://aleph.adojcinovic.com
+
+## How to run tests
+
+npx ng test --no-watch --code-coverage
+
+Test coverage is 100% (73 tests).
+
+## Notes
+
+- I used **signals** in the dashboard component and **RxJS observables with async pipe** in the country detail and country card components to showcase both approaches.
+- All routes are **lazy loaded** so each page only loads when you navigate to it.
+- The project follows a `core/shared/features` folder structure.
+
+---
+
 # Frontend Developer Assessment
 
 ## 0. Before you begin

@@ -1,0 +1,139 @@
+// Card
+.card {
+  background: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+  cursor: default;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  }
+}
+
+// Default view
+.card-default,
+.overlay,
+.card-loading {
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+}
+
+// Loading state
+.card-loading {
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card-flag {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 0.75rem 1rem 1rem;
+}
+
+.card-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin-bottom: 0.125rem;
+}
+
+.card-capital {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 0.375rem;
+}
+
+.card-pop {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.card-weather {
+  margin-top: 0.375rem;
+  font-size: 1rem;
+  font-weight: 600;
+
+  &.loading-weather {
+    color: #94a3b8;
+    font-weight: 400;
+    font-size: 0.8125rem;
+  }
+}
+
+// Hover overlay
+.overlay {
+  padding: 1rem;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay-flag {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.overlay h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.overlay-capital {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.overlay-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+
+  dt {
+    color: #64748b;
+  }
+
+  dd {
+    font-weight: 600;
+  }
+}
