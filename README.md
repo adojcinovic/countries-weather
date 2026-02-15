@@ -21,6 +21,7 @@ Test coverage is 100% (73 tests).
 - I used **signals** in the dashboard component and **RxJS observables with async pipe** in the country detail and country card components to showcase both approaches.
 - All routes are **lazy loaded** so each page only loads when you navigate to it.
 - The project follows a `core/shared/features` folder structure.
+- For purpose of optimizing api calls, and not getting as many api calls as there are countries on the dashboard page, I limited the forecast call per country only on hover over the country card, hence we cannot see the temperature for the country's capital city before we hover over the card. I've explored other solutions, there is an enpdoint that can fetch temperatures for all the capital cities at once, but without showing weather condition (rainy, sunny, etc). So I left it as it is, and would be happy to discuss how further it can be optimized.
 
 ---
 
