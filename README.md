@@ -1,4 +1,4 @@
-# Countries & Weather
+# States & Weather
 
 Angular app built with standalone components.
 
@@ -21,7 +21,7 @@ Test coverage is 100% (73 tests).
 - I used **signals** in the dashboard component and **RxJS observables with async pipe** in the country detail and country card components to showcase both approaches.
 - All routes are **lazy loaded** so each page only loads when you navigate to it.
 - The project follows a `core/shared/features` folder structure.
-- For purpose of optimizing api calls, and not getting as many api calls as there are countries on the dashboard page, I limited the forecast call per country only on hover over the country card, hence we cannot see the temperature for the country's capital city before we hover over the card. I've explored other solutions, there is an enpdoint that can fetch temperatures for all the capital cities at once, but without showing weather condition (rainy, sunny, etc). So I left it as it is, and would be happy to discuss how further it can be optimized.
+- For purpose of optimizing api calls, and not getting as many api calls as there are states on the dashboard page, I limited the forecast call per country only on hover over the country card, hence we cannot see the temperature for the country's capital city before we hover over the card. I've explored other solutions, there is an enpdoint that can fetch temperatures for all the capital cities at once, but without showing weather condition (rainy, sunny, etc). So I left it as it is, and would be happy to discuss how further it can be optimized.
 
 ---
 
@@ -77,14 +77,14 @@ Solutions in React are preferred here, but not mandatory. You can also implement
 
 You will work with two public APIs:
 
-1. **REST Countries API**: https://restcountries.com/v3.1/region/europe
+1. **REST Countries API**: https://reststates.com/v3.1/region/europe
 2. **Open-Meteo Weather API**: https://api.open-meteo.com/v1/forecast
 
 ### Task 2.1: Display Country Info
 
 Display detailed information for one specific country (your choice from Europe).
 
-Fetch data from: `https://restcountries.com/v3.1/name/{country_name}`
+Fetch data from: `https://reststates.com/v3.1/name/{country_name}`
 
 Display the following information:
 
@@ -95,11 +95,11 @@ Display the following information:
 - Region
 - Languages (comma-separated list)
 
-### Task 2.2: European Countries Dashboard
+### Task 2.2: European States Dashboard
 
-Create a search interface for European countries:
+Create a search interface for European states:
 
-1. **Input box** for searching countries by name
+1. **Input box** for searching states by name
 2. **Display results** as a grid of cards showing:
    - Flag image (should be medium-sized with rounded corners)
    - Country name
@@ -127,16 +127,16 @@ For each country card from Task 2.2:
 
 **Bonus**: Add the following features to enhance the dashboard:
 
-- Sort countries by population (ascending/descending)
-- Filter countries by language spoken (e.g., show only countries where English or German is spoken)
+- Sort states by population (ascending/descending)
+- Filter states by language spoken (e.g., show only states where English or German is spoken)
 - Sort by temperature (coldest to warmest)
 
 ### API Usage Notes
 
 **REST Countries API**:
 
-- Europe region endpoint: `https://restcountries.com/v3.1/region/europe`
-- Search by name: `https://restcountries.com/v3.1/name/{name}`
+- Europe region endpoint: `https://reststates.com/v3.1/region/europe`
+- Search by name: `https://reststates.com/v3.1/name/{name}`
 - No API key required
 
 **Open-Meteo Weather API**:
