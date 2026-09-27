@@ -1,5 +1,5 @@
 @if (loading()) {
-  <div class="status">Loading European countries...</div>
+  <div class="status">Loading European states...</div>
 }
 
 @if (error()) {
@@ -14,7 +14,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search countries..."
+          placeholder="Search states..."
           [ngModel]="searchTerm()"
           (ngModelChange)="searchTerm.set($event)"
         />
@@ -41,7 +41,7 @@
 
     <!-- Grid -->
     @if (filteredCountries().length === 0) {
-      <div class="status">No countries match your search.</div>
+      <div class="status">No states match your search.</div>
     } @else {
       <div class="grid">
         @for (country of filteredCountries(); track country.name.common) {

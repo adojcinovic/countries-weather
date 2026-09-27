@@ -157,7 +157,7 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.textContent).toContain('No countries match');
+    expect(el.textContent).toContain('No states match');
   });
 
   it('should sort by temperature ascending with missing weather', () => {

@@ -19,7 +19,7 @@ describe('App', () => {
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
     expect(el.querySelector('.nav-bar')).toBeTruthy();
-    expect(el.textContent).toContain('Countries & Weather');
+    expect(el.textContent).toContain('States & Weather');
   });
 
   it('should have navigation links', () => {

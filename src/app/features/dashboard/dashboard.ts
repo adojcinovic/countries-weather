@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Failed to load countries. Please try again later.');
+        this.error.set('Failed to load states. Please try again later.');
         this.loading.set(false);
       },
     });
