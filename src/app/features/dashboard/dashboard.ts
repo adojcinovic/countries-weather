@@ -1,6 +1,6 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { take } from 'rxjs';
 import { CountryService } from '../../core/services/country.service';
 import { CountryCardComponent } from '../../shared/components/country-card/country-card';
 import { Country, CountryWithWeather } from '../../shared/models/country.model';
@@ -46,10 +46,12 @@ export class DashboardComponent implements OnInit {
     return this.sortCountries(result, this.sortBy());
   });
 
+  private destroyRef = inject(DestroyRef);
+
   constructor(private countryService: CountryService) {}
 
   ngOnInit(): void {
-    this.countryService.getEuropeanCountries().pipe(take(1)).subscribe({
+    this.countryService.getEuropeanCountries().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (countries) => {
         this.countries.set(countries);
         this.allLanguages.set(this.extractLanguages(countries));

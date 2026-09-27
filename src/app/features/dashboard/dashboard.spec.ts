@@ -88,6 +88,16 @@ describe('DashboardComponent', () => {
     expect(cards.length).toBe(3);
   });
 
+  it('should cancel the countries request when destroyed', () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    fixture.detectChanges();
+    const req = httpMock.expectOne(europeUrl);
+
+    fixture.destroy();
+
+    expect(req.cancelled).toBe(true);
+  });
+
   it('should show error on API failure', () => {
     const fixture = TestBed.createComponent(DashboardComponent);
     fixture.detectChanges();
