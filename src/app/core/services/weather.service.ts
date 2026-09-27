@@ -17,7 +17,6 @@ export class WeatherService {
           longitude: lon.toString(),
           current:
             'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code',
-          wind_speed_unit: 'ms',
         },
       })
       .pipe(

@@ -1,4 +1,5 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { filter, fromEvent, take } from 'rxjs';
 import { CountryService } from '../../core/services/country.service';
@@ -23,6 +24,8 @@ export class DashboardComponent implements OnInit {
   languageFilter = signal('');
   allLanguages = signal<string[]>([]);
 
+  private readonly destroyRef = inject(DestroyRef);
+
   filteredCountries = computed(() => {
     let result = this.countries();
 
@@ -32,7 +35,7 @@ export class DashboardComponent implements OnInit {
       result = result.filter(
         (c) =>
           c.name.common.toLowerCase().includes(lower) ||
-          c.capital[0].toLowerCase().includes(lower)
+          c.capital?.some((cap) => cap.toLowerCase().includes(lower))
       );
     }
 
@@ -64,7 +67,10 @@ export class DashboardComponent implements OnInit {
     });
 
     fromEvent<KeyboardEvent>(document, 'keydown')
-      .pipe(filter((e) => e.key === 'Escape'))
+      .pipe(
+        filter((e) => e.key === 'Escape'),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => this.searchTerm.set(''));
   }
 
@@ -98,8 +104,8 @@ export class DashboardComponent implements OnInit {
       case 'temp-desc':
         return sorted.sort(
           (a, b) =>
-            (b.weather?.temperature ?? Infinity) -
-            (a.weather?.temperature ?? Infinity)
+            (b.weather?.temperature ?? -Infinity) -
+            (a.weather?.temperature ?? -Infinity)
         );
     }
   }

@@ -174,4 +174,72 @@ describe('DashboardComponent', () => {
     component.sortBy.set('temp-desc');
     expect(component.filteredCountries().length).toBe(3);
   });
+
+  it('should sort countries without weather last when sorting by temperature descending', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+    const weather = { feelsLike: 0, humidity: 0, windSpeed: 0, weatherCode: 0, condition: '', emoji: '' };
+    component.countries.set([
+      { ...mockCountries[0], weather: undefined },
+      { ...mockCountries[1], weather: { ...weather, temperature: 5 } },
+      { ...mockCountries[2], weather: { ...weather, temperature: 20 } },
+    ]);
+
+    component.sortBy.set('temp-desc');
+    const names = component.filteredCountries().map((c) => c.name.common);
+    expect(names).toEqual(['Austria', 'Germany', 'Slovenia']);
+  });
+
+  it('should filter countries by capital', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+
+    component.searchTerm.set('vienna');
+    const names = component.filteredCountries().map((c) => c.name.common);
+    expect(names).toEqual(['Austria']);
+  });
+
+  it('should not throw when searching countries without a capital', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+    component.countries.set([
+      ...mockCountries,
+      { ...mockCountries[0], name: { common: 'Nowhere', official: 'Nowhere' }, capital: [] },
+    ]);
+
+    component.searchTerm.set('berlin');
+    expect(() => component.filteredCountries()).not.toThrow();
+    expect(component.filteredCountries().map((c) => c.name.common)).toEqual(['Germany']);
+
+    component.searchTerm.set('nowhere');
+    expect(component.filteredCountries().map((c) => c.name.common)).toEqual(['Nowhere']);
+  });
+
+  it('should clear the search term on Escape', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+    component.searchTerm.set('slov');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(component.searchTerm()).toBe('');
+  });
+
+  it('should ignore keys other than Escape', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+    component.searchTerm.set('slov');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+    expect(component.searchTerm()).toBe('slov');
+  });
+
+  it('should stop listening for Escape after the component is destroyed', () => {
+    const fixture = createAndLoad();
+    const component = fixture.componentInstance;
+    component.searchTerm.set('slov');
+
+    fixture.destroy();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(component.searchTerm()).toBe('slov');
+  });
 });

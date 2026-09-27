@@ -50,6 +50,7 @@ describe('WeatherService', () => {
     expect(req.request.method).toBe('GET');
     expect(req.request.params.get('latitude')).toBe('46.05');
     expect(req.request.params.get('longitude')).toBe('14.51');
+    expect(req.request.params.has('wind_speed_unit')).toBeFalse();
     req.flush(mockApiResponse);
   });
 
