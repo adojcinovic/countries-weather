@@ -4,7 +4,7 @@ import { PopulationPipe } from '../../pipes/population.pipe';
 import { CountryWithWeather } from '../../models/country.model';
 import { WeatherService } from '../../../core/services/weather.service';
 import { WeatherData } from '../../models/weather.model';
-import { Observable, of, catchError, shareReplay } from 'rxjs';
+import { Observable, of, catchError, shareReplay, take } from 'rxjs';
 
 @Component({
   selector: 'app-country-card',
@@ -35,6 +35,7 @@ export class CountryCardComponent {
     }
 
     this.weather$ = this.weatherService.getWeather(coords[0], coords[1]).pipe(
+      take(1),
       catchError(() => of(null)),
       shareReplay(1)
     );
