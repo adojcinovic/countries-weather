@@ -1,6 +1,7 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { take } from 'rxjs';
+import { filter, fromEvent, take } from 'rxjs';
 import { CountryService } from '../../core/services/country.service';
 import { CountryCardComponent } from '../../shared/components/country-card/country-card';
 import { Country, CountryWithWeather } from '../../shared/models/country.model';
@@ -23,14 +24,18 @@ export class DashboardComponent implements OnInit {
   languageFilter = signal('');
   allLanguages = signal<string[]>([]);
 
+  private readonly destroyRef = inject(DestroyRef);
+
   filteredCountries = computed(() => {
     let result = this.countries();
 
     const term = this.searchTerm();
     if (term) {
       const lower = term.toLowerCase();
-      result = result.filter((c) =>
-        c.name.common.toLowerCase().includes(lower)
+      result = result.filter(
+        (c) =>
+          c.name.common.toLowerCase().includes(lower) ||
+          c.capital?.some((cap) => cap.toLowerCase().includes(lower))
       );
     }
 
@@ -60,6 +65,13 @@ export class DashboardComponent implements OnInit {
         this.loading.set(false);
       },
     });
+
+    fromEvent<KeyboardEvent>(document, 'keydown')
+      .pipe(
+        filter((e) => e.key === 'Escape'),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => this.searchTerm.set(''));
   }
 
   private extractLanguages(countries: Country[]): string[] {
