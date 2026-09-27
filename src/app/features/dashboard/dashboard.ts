@@ -1,6 +1,6 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { take } from 'rxjs';
+import { filter, fromEvent, take } from 'rxjs';
 import { CountryService } from '../../core/services/country.service';
 import { CountryCardComponent } from '../../shared/components/country-card/country-card';
 import { Country, CountryWithWeather } from '../../shared/models/country.model';
@@ -29,8 +29,10 @@ export class DashboardComponent implements OnInit {
     const term = this.searchTerm();
     if (term) {
       const lower = term.toLowerCase();
-      result = result.filter((c) =>
-        c.name.common.toLowerCase().includes(lower)
+      result = result.filter(
+        (c) =>
+          c.name.common.toLowerCase().includes(lower) ||
+          c.capital[0].toLowerCase().includes(lower)
       );
     }
 
@@ -60,6 +62,10 @@ export class DashboardComponent implements OnInit {
         this.loading.set(false);
       },
     });
+
+    fromEvent<KeyboardEvent>(document, 'keydown')
+      .pipe(filter((e) => e.key === 'Escape'))
+      .subscribe(() => this.searchTerm.set(''));
   }
 
   private extractLanguages(countries: Country[]): string[] {
@@ -92,8 +98,8 @@ export class DashboardComponent implements OnInit {
       case 'temp-desc':
         return sorted.sort(
           (a, b) =>
-            (b.weather?.temperature ?? -Infinity) -
-            (a.weather?.temperature ?? -Infinity)
+            (b.weather?.temperature ?? Infinity) -
+            (a.weather?.temperature ?? Infinity)
         );
     }
   }
