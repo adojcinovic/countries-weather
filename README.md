@@ -77,14 +77,14 @@ Solutions in React are preferred here, but not mandatory. You can also implement
 
 You will work with two public APIs:
 
-1. **REST Countries API**: https://reststates.com/v3.1/region/europe
+1. **REST Countries API**: https://restcountries.com/v3.1/region/europe
 2. **Open-Meteo Weather API**: https://api.open-meteo.com/v1/forecast
 
 ### Task 2.1: Display Country Info
 
 Display detailed information for one specific country (your choice from Europe).
 
-Fetch data from: `https://reststates.com/v3.1/name/{country_name}`
+Fetch data from: `https://restcountries.com/v3.1/name/{country_name}`
 
 Display the following information:
 
@@ -135,8 +135,8 @@ For each country card from Task 2.2:
 
 **REST Countries API**:
 
-- Europe region endpoint: `https://reststates.com/v3.1/region/europe`
-- Search by name: `https://reststates.com/v3.1/name/{name}`
+- Europe region endpoint: `https://restcountries.com/v3.1/region/europe`
+- Search by name: `https://restcountries.com/v3.1/name/{name}`
 - No API key required
 
 **Open-Meteo Weather API**:
