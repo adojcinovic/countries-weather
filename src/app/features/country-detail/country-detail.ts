@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { CountryService } from '../../core/services/country.service';
 import { Country } from '../../shared/models/country.model';
-import { Observable, catchError, map, of, take } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 interface CountryDetailState {
   country: Country | null;
@@ -21,7 +21,6 @@ export class CountryDetailComponent {
 
   constructor(private countryService: CountryService) {
     this.state$ = this.countryService.getCountryByName('Slovenia').pipe(
-      take(1),
       map((data) => ({ country: data[0], loading: false, error: null })),
       catchError(() =>
         of({ country: null, loading: false, error: 'Failed to load country data. Please try again later.' })
